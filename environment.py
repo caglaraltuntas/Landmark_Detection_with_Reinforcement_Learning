@@ -59,20 +59,12 @@ class environment():
                              self.patch_center[1] + int((self.patch_size[1] - 1) / 2 + 1)),
                      (self.patch_center[2] - int((self.patch_size[2] - 1) / 2)):(
                              self.patch_center[2] + int((self.patch_size[2] - 1) / 2 + 1))]
-        # plt.imshow(self.patch,cmap='gray')
-        # plt.show()
-        # Reshape the patch
-        # self.patch = np.expand_dims(self.patch, axis=0)
-        # self.patch = np.expand_dims(self.patch, axis=0)
-        # self.patch = np.moveaxis(self.patch, -1, 0)
-        # self.patch = np.moveaxis(self.patch, -1, 0)
-        # self.patch = np.moveaxis(self.patch, -1, 0)
 
         return self.patch
 
     def step(self, direction):
 
-        # R:0, L:1, U:2, D:3, F:4, B:5,    #Not defterindeki yönler baz alinmistir
+        # R:0, L:1, U:2, D:3, F:4, B:5,
         if direction == 0:
             if self.patch_center[1] + self.step_size <= self.limit_right:  # +y
                 self.patch_center[1] = self.patch_center[1] + self.step_size
@@ -115,10 +107,9 @@ class environment():
                 self.distance()
                 return (self.patch_show(), -1, self.dist)
 
-            # pass
+
         self.distance()
-        # self.patch_show()
-        # print("Reward: ", self.reward())
+
         return (self.patch_show(), self.reward(), self.dist)
 
     def distance(self):
@@ -134,10 +125,10 @@ class environment():
         return (self.distances[0] - self.distances[1]) / self.step_size
 
     def reset(self):
-        self.patch_center = [25, 25, 280]
-        # self.patch_center = [random.randint(self.limit_top, self.limit_bottom),
-        #                     random.randint(self.limit_left, self.limit_right),
-        #                     random.randint(self.limit_back, self.limit_front)]
+        #self.patch_center = [25, 25, 280]
+        self.patch_center = [random.randint(self.limit_top, self.limit_bottom),
+                             random.randint(self.limit_left, self.limit_right),
+                             random.randint(self.limit_back, self.limit_front)]
 
         self.distances = deque(maxlen=2)
         self.dist = math.sqrt((self.landmark_center[0] - self.patch_center[0]) ** 2 +
@@ -168,7 +159,7 @@ class environment():
         (self.landmark_center[0] - 2):(self.landmark_center[0] + 2)] = 0
 
         image_slice_x[((315 - self.landmark_center[2]) - 2):((315 - self.landmark_center[2]) + 2),
-        (self.landmark_center[1] - 2):(self.landmark_center[1] + 2)] = 0  # Rectangle mavi yap
+        (self.landmark_center[1] - 2):(self.landmark_center[1] + 2)] = 0
 
         # ---------------------Show image------------------------
 
@@ -201,8 +192,6 @@ class environment():
         rec_second_value_y = (315 - self.patch_center[2] - (self.patch_size[2] - 1) / 2)  # z
         # -----------------------------------------
 
-        # ax = plt.gca()
-        # Create a Rectangle patch
 
         rect_y = Rectangle((rec_first_value_y, rec_second_value_y), self.patch_size[2], self.patch_size[0], linewidth=1,
                            edgecolor='r', facecolor='none')
@@ -214,15 +203,12 @@ class environment():
         dot_x = Rectangle((self.patch_center[1], 315 - self.patch_center[2]), 2, 2, linewidth=1, edgecolor='r',
                           facecolor='red')
 
-        # circle = Circle((300,300), radius=10, facecolor="red" )
-
         self.ax1.add_patch(rect_y)
         self.ax1.add_patch(dot_y)
         self.ax2.add_patch(rect_x)
         self.ax2.add_patch(dot_x)
-        # self.ax1.add_patch(circle)
         self.ax3.plot(self.average_q_values, color="blue")
-        # self.ax4.plot(self.real_distance_list, color = "red")
+
         objects = ('Front', 'Back', 'Left', 'Right', 'Up', 'Down')
         x_pos = np.arange(len(objects))
 
@@ -240,7 +226,6 @@ class environment():
         [p.remove() for p in reversed(self.ax1.patches)]
         [p.remove() for p in reversed(self.ax2.patches)]
         self.ax4.clear()
-        # print("Distance:", self.distances[0])
 
     def deblur_image_first(self):
         self.image = self.blurred_image_level1
