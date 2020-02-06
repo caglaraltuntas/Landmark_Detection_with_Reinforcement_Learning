@@ -49,8 +49,6 @@ if __name__ == '__main__':
         # print("Estimated Distance: ", agent.estimate_distance()[0])
         print("Real Distance: ", distance)
 
-        # clear_output(wait=True)
-
         state = next_state
 
         env.render_patch(q_values=q_values, action=action)
